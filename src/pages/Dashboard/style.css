@@ -1,0 +1,104 @@
+.dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dashboard-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+}
+
+.dashboard-header {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard-role {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+/* Summary Cards */
+.dashboard-cards {
+  margin-bottom: 16px !important;
+}
+
+.stat-card {
+  border-radius: 12px !important;
+  border: none !important;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+}
+
+.stat-card .ant-statistic-title {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.stat-card .ant-statistic-content {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.stat-card .ant-statistic-content .anticon {
+  font-size: 22px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.stat-card-blue {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
+}
+.stat-card-blue .ant-statistic-title { color: #1e40af !important; }
+.stat-card-blue .ant-statistic-content { color: #2563eb !important; }
+
+.stat-card-green {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%) !important;
+}
+.stat-card-green .ant-statistic-title { color: #166534 !important; }
+.stat-card-green .ant-statistic-content { color: #16a34a !important; }
+
+.stat-card-orange {
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%) !important;
+}
+.stat-card-orange .ant-statistic-title { color: #9a3412 !important; }
+.stat-card-orange .ant-statistic-content { color: #ea580c !important; }
+
+.stat-card-purple {
+  background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%) !important;
+}
+.stat-card-purple .ant-statistic-title { color: #6b21a8 !important; }
+.stat-card-purple .ant-statistic-content { color: #9333ea !important; }
+
+/* Chart Cards */
+.dashboard-charts {
+  margin-bottom: 16px !important;
+}
+
+.chart-card {
+  border-radius: 12px !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04) !important;
+}
+
+.chart-card .ant-card-head {
+  border-bottom: 1px solid #f1f5f9;
+  min-height: 48px;
+}
+
+.chart-card .ant-card-head-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.chart-card .ant-card-body {
+  padding: 12px;
+}
