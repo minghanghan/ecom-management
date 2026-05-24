@@ -9,6 +9,7 @@ import {
   MoneyCollectOutlined,
   SettingOutlined,
   ShopOutlined,
+  SendOutlined,
   UserOutlined,
   LogoutOutlined,
   MenuFoldOutlined,
@@ -27,6 +28,7 @@ const menuItems = [
   { key: '/orders', icon: <ShoppingCartOutlined />, label: '订单管理', roles: ['admin', 'manager', 'user'] },
   { key: '/requirements', icon: <FileAddOutlined />, label: '需求提交', roles: ['admin', 'user'] },
   { key: '/artist-tasks', icon: <PictureOutlined />, label: '美工师任务', roles: ['admin', 'artist'] },
+  { key: '/deploy-links', icon: <SendOutlined />, label: '布置链接', roles: ['admin', 'user'] },
   { key: '/finance', icon: <MoneyCollectOutlined />, label: '财务管理', roles: ['admin', 'manager'] },
   { key: '/settings', icon: <SettingOutlined />, label: '管理中心', roles: ['admin'] },
 ];

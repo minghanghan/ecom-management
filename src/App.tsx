@@ -11,6 +11,7 @@ import ProductsPage from './pages/Products';
 import OrdersPage from './pages/Orders';
 import RequirementsPage from './pages/Requirements';
 import ArtistTasksPage from './pages/ArtistTasks';
+import DeployLinksPage from './pages/DeployLinks';
 import SettingsPage from './pages/Settings';
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
               <Route path="orders" element={<OrdersPage />} />
               <Route path="requirements" element={<RequirementsPage />} />
               <Route path="artist-tasks" element={<ArtistTasksPage />} />
+              <Route path="deploy-links" element={<DeployLinksPage />} />
               <Route path="settings" element={<SettingsPage />} />
             </Route>
             
