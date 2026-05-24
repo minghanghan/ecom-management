@@ -5,7 +5,8 @@ declare module 'antd' {
   export const Menu: ComponentType<any>;
   export const Button: ComponentType<any>;
   export const Form: ComponentType<any> & { Item: ComponentType<any>; useForm: any };
-  export const Input: ComponentType<any> & { Password: ComponentType<any> };
+  export const Input: ComponentType<any> & { Password: ComponentType<any>; TextArea: ComponentType<any> };
+  export const InputNumber: ComponentType<any>;
   export const Select: ComponentType<any> & { Option: ComponentType<any> };
   export const Card: ComponentType<any>;
   export const Typography: { Title: ComponentType<any>; Text: ComponentType<any> };
@@ -64,6 +65,26 @@ declare module '@ant-design/icons' {
   export const MenuUnfoldOutlined: ComponentType<any>;
   export const ExclamationCircleOutlined: ComponentType<any>;
   export const DollarOutlined: ComponentType<any>;
+  export const SearchOutlined: ComponentType<any>;
+  export const EditOutlined: ComponentType<any>;
+  export const DeleteOutlined: ComponentType<any>;
+  export const PlusOutlined: ComponentType<any>;
+  export const EyeOutlined: ComponentType<any>;
+  export const DownloadOutlined: ComponentType<any>;
+  export const InboxOutlined: ComponentType<any>;
+  export const CloudUploadOutlined: ComponentType<any>;
+  export const ExportOutlined: ComponentType<any>;
+  export const CheckCircleOutlined: ComponentType<any>;
+  export const ClockCircleOutlined: ComponentType<any>;
+  export const CloseCircleOutlined: ComponentType<any>;
+  export const SyncOutlined: ComponentType<any>;
+  export const RollbackOutlined: ComponentType<any>;
+  export const CopyOutlined: ComponentType<any>;
+  export const FilterOutlined: ComponentType<any>;
+  export const TagOutlined: ComponentType<any>;
+  export const TeamOutlined: ComponentType<any>;
+  export const CarryOutOutlined: ComponentType<any>;
+  export const AuditOutlined: ComponentType<any>;
 }
 
 // ECharts subpath modules

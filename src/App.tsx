@@ -7,6 +7,11 @@ import ProtectedRoute from './components/ProtectedRoute';
 import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
 import DashboardPage from './pages/Dashboard';
+import ProductsPage from './pages/Products';
+import OrdersPage from './pages/Orders';
+import RequirementsPage from './pages/Requirements';
+import ArtistTasksPage from './pages/ArtistTasks';
+import SettingsPage from './pages/Settings';
 
 function App() {
   return (
@@ -25,6 +30,11 @@ function App() {
               }
             >
               <Route index element={<DashboardPage />} />
+              <Route path="products" element={<ProductsPage />} />
+              <Route path="orders" element={<OrdersPage />} />
+              <Route path="requirements" element={<RequirementsPage />} />
+              <Route path="artist-tasks" element={<ArtistTasksPage />} />
+              <Route path="settings" element={<SettingsPage />} />
             </Route>
             
             <Route path="*" element={<Navigate to="/" replace />} />

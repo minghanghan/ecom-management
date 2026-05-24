@@ -1,0 +1,567 @@
+/* ═══════════════════════════════════════════
+   Deploy Links — "Indigo Kanban"
+   Refined card-kanban within indigo theme
+   ═══════════════════════════════════════════ */
+
+.deploy-links-page {
+  position: relative;
+  z-index: 1;
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  color: #1e293b;
+  margin: -24px;
+  padding: 24px;
+  min-height: calc(100vh - 64px - 48px);
+}
+
+/* ── Background ──────────────────────────── */
+
+.dl-bg {
+  position: absolute;
+  inset: -24px;
+  z-index: -1;
+  background: linear-gradient(165deg, #f0f0fa 0%, #f8f8fc 35%, #ffffff 100%);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.dl-bg::before {
+  content: '';
+  position: absolute;
+  top: -180px;
+  right: -100px;
+  width: 440px;
+  height: 440px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.dl-bg::after {
+  content: '';
+  position: absolute;
+  bottom: -100px;
+  left: -60px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(129, 140, 248, 0.04) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.dl-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* ── Header ─────────────────────────────── */
+
+.dl-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  animation: dlFadeInUp 0.5s ease both;
+}
+
+.dl-title {
+  font-family: 'Noto Serif SC', 'Source Han Serif SC', serif;
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  line-height: 1.3;
+  background: linear-gradient(135deg, #1e1b4b 0%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dl-subtitle {
+  color: #94a3b8;
+  font-size: 13px;
+  margin: 0;
+  font-weight: 400;
+}
+
+.dl-subtitle-strong {
+  color: #6366f1;
+  font-weight: 600;
+}
+
+/* ── Filter Tabs Card ───────────────────── */
+
+.dl-filters-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(99, 102, 241, 0.04);
+  animation: dlFadeInUp 0.5s ease both 0.05s;
+}
+
+.dl-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.dl-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: #64748b;
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.dl-tab:hover {
+  color: #6366f1;
+  background: rgba(99, 102, 241, 0.04);
+  border-color: rgba(99, 102, 241, 0.1);
+}
+
+.dl-tab-active {
+  color: #6366f1 !important;
+  background: #eef2ff !important;
+  border-color: rgba(99, 102, 241, 0.15) !important;
+  box-shadow: 0 1px 4px rgba(99, 102, 241, 0.06);
+}
+
+.dl-tab-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.dl-tab-active .dl-tab-dot {
+  transform: scale(1.2);
+}
+
+.dl-tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.04);
+  color: #64748b;
+}
+
+.dl-tab-active .dl-tab-count {
+  background: rgba(99, 102, 241, 0.1);
+  color: #6366f1;
+}
+
+/* ── Empty state ─────────────────────────── */
+
+.dl-empty {
+  padding: 80px 0;
+  animation: dlFadeInUp 0.5s ease both;
+}
+
+.dl-empty .ant-empty-description {
+  color: #94a3b8;
+}
+
+/* ── Card Grid ──────────────────────────── */
+
+.dl-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+  gap: 18px;
+}
+
+/* ── Card ───────────────────────────────── */
+
+.dl-card {
+  border-radius: 14px !important;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid #e8edf4 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 20px rgba(99, 102, 241, 0.04) !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  animation: dlFadeInUp 0.5s ease both;
+}
+
+.dl-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(99, 102, 241, 0.1), 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+  border-color: #d0dff0 !important;
+}
+
+.dl-card .ant-card-body {
+  padding: 0 !important;
+}
+
+/* Stagger animation for cards */
+.dl-card:nth-child(2) { animation-delay: 0.04s; }
+.dl-card:nth-child(3) { animation-delay: 0.08s; }
+.dl-card:nth-child(4) { animation-delay: 0.12s; }
+.dl-card:nth-child(5) { animation-delay: 0.16s; }
+.dl-card:nth-child(6) { animation-delay: 0.2s; }
+.dl-card:nth-child(7) { animation-delay: 0.24s; }
+.dl-card:nth-child(8) { animation-delay: 0.28s; }
+
+/* ── Priority Badge ──────────────────────── */
+
+.dl-card-badge {
+  position: absolute;
+  top: 14px;
+  right: -30px;
+  padding: 2px 36px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  transform: rotate(45deg);
+  z-index: 2;
+  text-align: center;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* ── Dual Status Row ─────────────────────── */
+
+.dl-status-row {
+  display: flex;
+  gap: 6px;
+  padding: 12px 12px 0;
+  flex-wrap: wrap;
+}
+
+.dl-status-tag {
+  margin: 0 !important;
+  border-radius: 6px !important;
+  padding: 2px 10px !important;
+  font-size: 11px !important;
+  line-height: 20px !important;
+  border: none !important;
+  font-weight: 500 !important;
+}
+
+/* ── Card Body ──────────────────────────── */
+
+.dl-card-body {
+  padding: 10px 18px 14px;
+}
+
+.dl-card-product {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 2px;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dl-card-sku {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-bottom: 10px;
+  font-family: 'DM Sans', 'SF Mono', monospace;
+  letter-spacing: 0.02em;
+}
+
+.dl-card-desc {
+  margin-bottom: 12px !important;
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.6;
+}
+
+/* ── Files Section ──────────────────────── */
+
+.dl-card-files {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e8edf4;
+}
+
+.dl-files-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #6366f1;
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+
+.dl-files-list-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dl-file-path-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #ffffff;
+  border: 1px solid #e8edf4;
+  font-size: 12px;
+  color: #475569;
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+.dl-file-path-item svg {
+  font-size: 11px;
+  color: #6366f1;
+  flex-shrink: 0;
+}
+
+/* ── Links ──────────────────────────────── */
+
+.dl-card-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.dl-link-item {
+  font-size: 11.5px;
+  color: #6366f1;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: 6px;
+  background: #eef2ff;
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  transition: all 0.2s ease;
+}
+
+.dl-link-item:hover {
+  color: #4f46e5;
+  background: #e0e7ff;
+  border-color: rgba(99, 102, 241, 0.2);
+  text-decoration: none;
+}
+
+.dl-link-empty {
+  font-size: 11.5px;
+  color: #cbd5e1;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: 6px;
+  background: #f8fafc;
+  border: 1px dashed #e2e8f0;
+}
+
+/* ── Meta info ──────────────────────────── */
+
+.dl-card-meta,
+.dl-card-time,
+.dl-card-assignee {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dl-card-assignee {
+  color: #6366f1;
+}
+
+.dl-card-store {
+  font-size: 12px;
+  color: #6366f1;
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dl-card-store svg {
+  font-size: 11px;
+}
+
+.dl-card-assignee svg {
+  font-size: 11px;
+}
+
+/* ── Card Actions ───────────────────────── */
+
+.dl-card-actions {
+  padding: 12px 18px;
+  background: linear-gradient(0deg, #f8fafc 0%, #ffffff 100%);
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ── Deploy row (input + button) ────────── */
+
+.dl-deploy-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.dl-link-input {
+  flex: 1;
+  min-width: 0;
+  height: 32px !important;
+  border-radius: 8px !important;
+  font-size: 12px !important;
+  border-color: #d0d5dd !important;
+}
+
+.dl-link-input:hover {
+  border-color: #a5b4fc !important;
+}
+
+.dl-link-input:focus,
+.dl-link-input-focused {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08) !important;
+}
+
+.dl-link-input::placeholder {
+  color: #b0b8c4 !important;
+}
+
+/* ── Deploy Button ──────────────────────── */
+
+.dl-btn-deploy {
+  height: 32px !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
+  border: none !important;
+  box-shadow: 0 3px 10px rgba(99, 102, 241, 0.25) !important;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.dl-btn-deploy:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3) !important;
+  background: linear-gradient(135deg, #818cf8, #6366f1) !important;
+}
+
+.dl-btn-deploy:active {
+  transform: translateY(0) !important;
+}
+
+/* ── Deploy result (readonly link) ──────── */
+
+.dl-deploy-result {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.dl-deploy-link-readonly {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #eef2ff;
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  font-size: 12px;
+  color: #6366f1;
+  word-break: break-all;
+  line-height: 1.4;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.dl-deploy-link-readonly a {
+  color: #4f46e5;
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dl-deploy-link-readonly a:hover {
+  text-decoration: underline;
+}
+
+.dl-deploy-link-readonly svg {
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.dl-deploy-tag {
+  margin: 0 !important;
+  font-size: 12px !important;
+  border-radius: 6px !important;
+  padding: 2px 12px !important;
+  line-height: 22px !important;
+}
+
+.dl-completed-tag {
+  margin: 0 !important;
+  font-size: 12px !important;
+  border-radius: 6px !important;
+  padding: 2px 12px !important;
+  line-height: 22px !important;
+}
+
+/* ── Animation ──────────────────────────── */
+
+@keyframes dlFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Responsive ─────────────────────────── */
+
+@media (max-width: 768px) {
+  .deploy-links-page {
+    margin: -16px;
+    padding: 16px;
+  }
+  .dl-bg {
+    inset: -16px;
+  }
+  .dl-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .dl-card-grid {
+    grid-template-columns: 1fr;
+  }
+}

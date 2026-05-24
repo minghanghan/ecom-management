@@ -1,9 +1,11 @@
 import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import pool from '../config/database';
 import { config } from '../config';
 import { JwtPayload, AuthRequest } from '../types';
+import { RowDataPacket } from 'mysql2';
 
-export function authenticate(req: AuthRequest, res: Response, next: NextFunction) {
+export async function authenticate(req: AuthRequest, res: Response, next: NextFunction) {
   const token = req.cookies?.token;
 
   if (!token) {
@@ -32,4 +34,40 @@ export function authorize(...roles: string[]) {
     }
     next();
   };
+}
+
+export function requirePermission(perm: string) {
+  return (req: AuthRequest, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      res.status(401).json({ message: '未登录' });
+      return;
+    }
+    if (req.user.role === 'admin') {
+      next();
+      return;
+    }
+    if (req.user.permissions?.[perm]) {
+      next();
+      return;
+    }
+    res.status(403).json({ message: '无此操作权限' });
+  };
+}
+
+export async function loadUserPermissions(userId: number): Promise<Record<string, boolean>> {
+  try {
+    const [rows] = await pool.execute<RowDataPacket[]>(
+      `SELECT r.permissions FROM users u
+       JOIN roles r ON u.role_id = r.id
+       WHERE u.id = ?`,
+      [userId]
+    );
+    if (rows.length > 0 && rows[0].permissions) {
+      if (typeof rows[0].permissions === 'string') {
+        return JSON.parse(rows[0].permissions);
+      }
+      return rows[0].permissions;
+    }
+  } catch (_e) { /* fall through */ }
+  return {};
 }

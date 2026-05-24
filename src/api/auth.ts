@@ -19,6 +19,10 @@ export interface UserInfo {
   email: string | null;
   nickname: string | null;
   role: string;
+  role_name: string | null;
+  store_id: number | null;
+  role_id: number | null;
+  permissions: Record<string, boolean>;
   status: number;
   last_login_at: string | null;
   created_at: string;

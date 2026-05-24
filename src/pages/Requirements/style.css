@@ -1,0 +1,452 @@
+/* ═══════════════════════════════════════════
+   Requirements — "Design Requests"
+   Blue theme (consistent with app palette)
+   ═══════════════════════════════════════════ */
+
+.requirements-page {
+  position: relative;
+  z-index: 1;
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  color: #1e293b;
+  margin: -24px;
+  padding: 24px;
+  min-height: calc(100vh - 64px - 48px);
+}
+
+/* ── Background ──────────────────────────── */
+
+.requirements-bg {
+  position: absolute;
+  inset: -24px;
+  z-index: -1;
+  background: linear-gradient(165deg, #f0f4fa 0%, #f8fafc 35%, #ffffff 100%);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.requirements-bg::before {
+  content: '';
+  position: absolute;
+  top: -180px;
+  right: -100px;
+  width: 440px;
+  height: 440px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.requirements-bg::after {
+  content: '';
+  position: absolute;
+  bottom: -120px;
+  left: -80px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.04) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.requirements-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* ── Header ─────────────────────────────── */
+
+.r-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  animation: rFadeInUp 0.5s ease both;
+}
+
+.r-title {
+  font-family: 'Noto Serif SC', 'Source Han Serif SC', serif;
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  line-height: 1.3;
+  background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.r-subtitle {
+  color: #94a3b8;
+  font-size: 13px;
+  margin: 0;
+  font-weight: 400;
+}
+
+.r-subtitle-strong {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.r-btn-add {
+  height: 40px !important;
+  border-radius: 10px !important;
+  font-weight: 500 !important;
+  background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
+  border: none !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3) !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  flex-shrink: 0;
+}
+
+.r-btn-add:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.35) !important;
+  background: linear-gradient(135deg, #818cf8, #6366f1) !important;
+}
+
+.r-btn-add:active {
+  transform: translateY(0) !important;
+}
+
+/* ── Status Tabs ────────────────────────── */
+
+.r-status-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  animation: rFadeInUp 0.5s ease both 0.05s;
+}
+
+.r-status-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  user-select: none;
+}
+
+.r-status-tab:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #1e293b;
+}
+
+.r-status-tab-active {
+  background: #eff6ff !important;
+  border-color: #3b82f6 !important;
+  color: #2563eb !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.12);
+}
+
+.r-status-tab-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Table Card ─────────────────────────── */
+
+.r-table-card {
+  background: #ffffff;
+  border: 1px solid #e8edf4;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 20px rgba(99, 102, 241, 0.04);
+  animation: rFadeInUp 0.5s ease both 0.1s;
+}
+
+.r-table-card .ant-table {
+  font-size: 13px;
+}
+
+/* Table Header */
+.r-table-card .ant-table-thead > tr > th {
+  background: #f6f8fc !important;
+  color: #475569;
+  font-weight: 600;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #e2e8f0 !important;
+  padding: 14px 16px !important;
+  user-select: none;
+}
+
+.r-table-card .ant-table-thead > tr > th::before {
+  display: none !important;
+}
+
+.r-table-card .ant-table-thead > tr > th:first-child {
+  padding-left: 20px !important;
+}
+
+/* Table Body */
+.r-table-card .ant-table-tbody > tr > td {
+  border-bottom: 1px solid #f1f5f9 !important;
+  padding: 14px 16px !important;
+  vertical-align: middle;
+  transition: background-color 0.2s ease;
+}
+
+.r-table-card .ant-table-tbody > tr > td:first-child {
+  padding-left: 20px !important;
+}
+
+.r-table-card .ant-table-tbody > tr:hover > td {
+  background: #f6faff !important;
+}
+
+.r-table-card .ant-table-tbody > tr:last-child > td {
+  border-bottom: none !important;
+}
+
+.r-table-card .ant-table-tbody > tr.ant-table-row-selected > td {
+  background: #eff6ff !important;
+}
+
+/* Pagination */
+.r-table-card .ant-table-pagination {
+  margin: 16px 20px !important;
+}
+
+/* ── Product Cell ───────────────────────── */
+
+.req-product-cell {
+  min-width: 0;
+}
+
+.req-product-name {
+  font-weight: 500;
+  color: #0f172a;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+  line-height: 1.4;
+}
+
+.req-product-sku {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 2px;
+  font-family: 'DM Sans', 'SF Mono', monospace;
+  letter-spacing: 0.02em;
+}
+
+/* ── Priority Tag ───────────────────────── */
+
+.req-priority-tag {
+  border-radius: 6px !important;
+  font-size: 11.5px !important;
+  padding: 0 10px !important;
+  line-height: 22px !important;
+  font-weight: 500 !important;
+  border: none !important;
+}
+
+/* ── Links Cell ─────────────────────────── */
+
+.req-links-cell {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.req-link-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #f0f4ff;
+  color: #4f46e5;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.req-link-item:hover {
+  background: #eef2ff;
+  color: #4338ca;
+  border-color: rgba(99, 102, 241, 0.25);
+}
+
+/* ── Status Tag ─────────────────────────── */
+
+.req-status-tag {
+  border-radius: 6px !important;
+  font-size: 11.5px !important;
+  padding: 0 10px !important;
+  line-height: 22px !important;
+  font-weight: 500 !important;
+  border: none !important;
+}
+
+/* ── Time ───────────────────────────────── */
+
+.req-time-text {
+  color: #94a3b8;
+  font-size: 11.5px;
+  font-family: 'DM Sans', 'SF Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+/* ── Actions ────────────────────────────── */
+
+.req-actions .ant-btn-link {
+  padding: 0 6px !important;
+  font-size: 12px !important;
+  height: 26px !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease !important;
+}
+
+.req-actions .ant-btn-link:not(.ant-btn-dangerous) {
+  color: #64748b !important;
+}
+
+.req-actions .ant-btn-link:hover:not(.ant-btn-dangerous) {
+  color: #4f46e5 !important;
+  background: #eef2ff !important;
+}
+
+.req-actions .ant-btn-dangerous {
+  color: #94a3b8 !important;
+}
+
+.req-actions .ant-btn-dangerous:hover {
+  color: #dc2626 !important;
+  background: #fef2f2 !important;
+}
+
+/* ── Modal ──────────────────────────────── */
+
+.r-modal .ant-modal-content {
+  border-radius: 16px !important;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(99, 102, 241, 0.08);
+}
+
+.r-modal .ant-modal-header {
+  padding: 24px 24px 12px;
+  border-bottom: none;
+}
+
+.r-modal .ant-modal-title {
+  font-family: 'Noto Serif SC', 'Source Han Serif SC', serif;
+  font-size: 18px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #0f172a 0%, #4f46e5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.r-modal .ant-modal-body {
+  padding: 8px 24px 20px;
+}
+
+.r-modal .ant-modal-footer {
+  padding: 12px 24px 20px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.r-modal .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.r-modal .ant-form-item-label > label {
+  font-size: 13px;
+  color: #475569;
+  font-weight: 500;
+}
+
+.r-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+.r-form-section-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Modal inputs */
+.r-modal .ant-input,
+.r-modal .ant-input-affix-wrapper,
+.r-modal .ant-select-selector,
+.r-modal .ant-input-number {
+  border-radius: 8px !important;
+  border-color: #e2e8f0 !important;
+}
+
+.r-modal .ant-input:hover,
+.r-modal .ant-select-selector:hover {
+  border-color: #a5b4fc !important;
+}
+
+.r-modal .ant-input:focus,
+.r-modal .ant-input-focused,
+.r-modal .ant-input-affix-wrapper-focused,
+.r-modal .ant-select-focused .ant-select-selector {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08) !important;
+}
+
+/* ── Responsive ─────────────────────────── */
+
+@media (max-width: 768px) {
+  .requirements-page {
+    margin: -16px;
+    padding: 16px;
+  }
+  .requirements-bg {
+    inset: -16px;
+  }
+  .r-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .r-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .r-status-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+  }
+}
+
+/* ── Animation ──────────────────────────── */
+
+@keyframes rFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

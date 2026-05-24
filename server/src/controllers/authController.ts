@@ -8,7 +8,7 @@ import { RowDataPacket, ResultSetHeader } from 'mysql2';
 
 function stripPassword(user: User): UserWithoutPassword {
   const { password, ...rest } = user;
-  return rest;
+  return { ...rest, permissions: {} };
 }
 
 const PHONE_REGEX = /^1[3-9]\d{9}$/;
@@ -63,9 +63,9 @@ export async function register(req: AuthRequest, res: Response) {
     const user = users[0] as User;
 
     const token = jwt.sign(
-      { userId: user.id, username: user.username, role: user.role },
+      { userId: user.id, username: user.username, role: user.role, store_id: null, role_id: null, permissions: {} },
       config.jwtSecret,
-      { expiresIn: config.jwtExpiresIn }
+      { expiresIn: config.jwtExpiresIn as any }
     );
 
     res.cookie('token', token, {
@@ -136,11 +136,31 @@ export async function login(req: AuthRequest, res: Response) {
     // Update last login time
     await pool.execute('UPDATE users SET last_login_at = NOW() WHERE id = ?', [user.id]);
 
-    const token = jwt.sign(
-      { userId: user.id, username: user.username, role: user.role },
-      config.jwtSecret,
-      { expiresIn: config.jwtExpiresIn }
-    );
+    // Load permissions and role name from custom role
+    let permissions: Record<string, boolean> = {};
+    let role_name: string | null = null;
+    if (user.role === 'admin') {
+      // Admin has all permissions
+      const { PERMISSION_DEFS } = await import('../types');
+      PERMISSION_DEFS.forEach((p: any) => { permissions[p.key] = true; });
+    } else if (user.role_id) {
+      const [roleRows] = await pool.execute<RowDataPacket[]>(
+        'SELECT permissions, name FROM roles WHERE id = ?', [user.role_id]
+      );
+      if (roleRows.length > 0) {
+        const raw = roleRows[0].permissions;
+        permissions = typeof raw === 'string' ? JSON.parse(raw) : raw;
+        role_name = roleRows[0].name;
+      }
+    }
+
+    const tokenPayload = {
+      userId: user.id, username: user.username, role: user.role,
+      store_id: user.store_id, role_id: user.role_id,
+      permissions,
+    };
+
+    const token = jwt.sign(tokenPayload, config.jwtSecret, { expiresIn: config.jwtExpiresIn as any });
 
     res.cookie('token', token, {
       httpOnly: true,
@@ -148,7 +168,10 @@ export async function login(req: AuthRequest, res: Response) {
       sameSite: 'lax',
     });
 
-    res.json({ user: { ...stripPassword(user), last_login_at: new Date().toISOString() }, message: '登录成功' });
+    res.json({
+      user: { ...stripPassword(user), permissions, role_name, last_login_at: new Date().toISOString() },
+      message: '登录成功',
+    });
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ message: '服务器错误' });
@@ -159,13 +182,46 @@ export async function getMe(req: AuthRequest, res: Response) {
   try {
     const [rows] = await pool.execute<RowDataPacket[]>(
       'SELECT * FROM users WHERE id = ?',
-      [req.user?.userId]
+      [req.user!.userId]
     );
     if (rows.length === 0) {
       res.status(404).json({ message: '用户不存在' });
       return;
     }
-    res.json({ user: stripPassword(rows[0] as User) });
+    const user = rows[0] as User;
+
+    // Always load fresh permissions from database (not from JWT)
+    let permissions: Record<string, boolean> = {};
+    let role_name: string | null = null;
+
+    if (user.role === 'admin') {
+      const { PERMISSION_DEFS } = await import('../types');
+      PERMISSION_DEFS.forEach((p: any) => { permissions[p.key] = true; });
+    } else if (user.role_id) {
+      const [roleRows] = await pool.execute<RowDataPacket[]>(
+        'SELECT permissions, name FROM roles WHERE id = ?', [user.role_id]
+      );
+      if (roleRows.length > 0) {
+        const raw = roleRows[0].permissions;
+        permissions = typeof raw === 'string' ? JSON.parse(raw) : raw;
+        role_name = roleRows[0].name;
+      }
+    }
+
+    // Also refresh the JWT token so backend route guards use updated permissions
+    const tokenPayload = {
+      userId: user.id, username: user.username, role: user.role,
+      store_id: user.store_id, role_id: user.role_id,
+      permissions,
+    };
+    const token = jwt.sign(tokenPayload, config.jwtSecret, { expiresIn: config.jwtExpiresIn as any });
+    res.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 15 * 24 * 60 * 60 * 1000,
+      sameSite: 'lax',
+    });
+
+    res.json({ user: { ...stripPassword(user), permissions, role_name } });
   } catch (error) {
     console.error('GetMe error:', error);
     res.status(500).json({ message: '服务器错误' });
