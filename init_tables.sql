@@ -137,4 +137,5 @@ CREATE TABLE IF NOT EXISTS chat_messages (
 -- 修复：给已存在的表补充缺失的列
 -- 如果表已存在但缺少某些列，运行下面语句
 -- ============================================
-ALTER TABLE products ADD COLUMN IF NOT EXISTS images JSON COMMENT '商品图片' AFTER description;
+-- 如果 products 表缺少 images 列，取消注释下面这行执行：
+-- ALTER TABLE products ADD COLUMN images JSON COMMENT '商品图片' AFTER description;
