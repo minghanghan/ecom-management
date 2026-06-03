@@ -8,6 +8,7 @@ import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
 import DashboardPage from './pages/Dashboard';
 import ProductsPage from './pages/Products';
+import ChatPage from './pages/Chat';
 import OrdersPage from './pages/Orders';
 import RequirementsPage from './pages/Requirements';
 import ArtistTasksPage from './pages/ArtistTasks';
@@ -36,6 +37,7 @@ function App() {
               <Route path="requirements" element={<RequirementsPage />} />
               <Route path="artist-tasks" element={<ArtistTasksPage />} />
               <Route path="deploy-links" element={<DeployLinksPage />} />
+              <Route path="chat" element={<ChatPage />} />
               <Route path="settings" element={<SettingsPage />} />
             </Route>
             

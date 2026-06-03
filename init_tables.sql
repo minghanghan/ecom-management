@@ -2,6 +2,9 @@
 -- 电商管理系统 - 数据库建表脚本
 -- 数据库: ecom_management
 -- ============================================
+-- 使用方法:
+--   mysql -u root -p < init_tables.sql
+-- ============================================
 
 CREATE DATABASE IF NOT EXISTS ecom_management
   CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -80,8 +83,8 @@ CREATE TABLE IF NOT EXISTS orders (
   total_amount DECIMAL(10,2) DEFAULT 0 COMMENT '总金额',
   discount DECIMAL(10,2) DEFAULT 0 COMMENT '优惠',
   actual_amount DECIMAL(10,2) DEFAULT 0 COMMENT '实付金额',
-  status VARCHAR(32) DEFAULT 'pending' COMMENT '订单状态: pending/paid/shipped/delivered/completed/cancelled/refunded',
-  refund_status VARCHAR(32) DEFAULT 'none' COMMENT '售后状态: none/refunding/refunded/exchanged',
+  status VARCHAR(32) DEFAULT 'pending' COMMENT '订单状态',
+  refund_status VARCHAR(32) DEFAULT 'none' COMMENT '售后状态',
   buyer_name VARCHAR(128) COMMENT '买家',
   buyer_phone VARCHAR(32) COMMENT '买家电话',
   shipping_address TEXT COMMENT '收货地址',
@@ -116,3 +119,22 @@ CREATE TABLE IF NOT EXISTS requirements (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ── 聊天消息表 ──────────────────────────────
+CREATE TABLE IF NOT EXISTS chat_messages (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  sender_id INT NOT NULL COMMENT '发送者ID',
+  receiver_id INT DEFAULT NULL COMMENT '接收者ID（NULL=发给管理员）',
+  message TEXT NOT NULL COMMENT '消息内容',
+  is_read TINYINT DEFAULT 0 COMMENT '0未读 1已读',
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_sender (sender_id),
+  INDEX idx_receiver (receiver_id),
+  INDEX idx_read (is_read)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================
+-- 修复：给已存在的表补充缺失的列
+-- 如果表已存在但缺少某些列，运行下面语句
+-- ============================================
+ALTER TABLE products ADD COLUMN IF NOT EXISTS images JSON COMMENT '商品图片' AFTER description;

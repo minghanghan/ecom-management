@@ -44,6 +44,7 @@ export async function updateUser(id: number, data: Partial<{
   store_id: number;
   role_id: number;
   status: number;
+  
 }>) {
   const res = await api.put<AdminUser>(`/admin/users/${id}`, data);
   return res.data;

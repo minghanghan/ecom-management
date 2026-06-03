@@ -11,6 +11,7 @@ import adminRoutes from './routes/admin';
 import uploadRoutes from './routes/upload';
 import requirementRoutes from './routes/requirements';
 import artistTaskRoutes from './routes/artistTasks';
+import chatRoutes from './routes/chat';
 import deployLinksRoutes from './routes/deployLinks';
 import { seedAdmin } from './controllers/authController';
 import { initDatabase } from './config/database';
@@ -39,6 +40,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/requirements', requirementRoutes);
 app.use('/api/artist-tasks', artistTaskRoutes);
+app.use('/api/chat', chatRoutes);
 app.use('/api/deploy-links', deployLinksRoutes);
 
 // Health check

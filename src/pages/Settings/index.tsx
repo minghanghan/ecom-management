@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import {
-  Table, Button, Modal, Form, Input, Select, Switch, Tag, Space, message, Tabs, Popconfirm,
+  Table, Button, Modal, Form, Input, Select, Switch, Tag, Space, message, Tabs, Popconfirm, Tooltip,
 } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, DeleteOutlined, KeyOutlined } from '@ant-design/icons';
 import { useAuth } from '../../context/AythContext';
 import {
   getUsers, createUser, updateUser, deleteUser,
@@ -25,6 +25,10 @@ function UserTab() {
   const [editing, setEditing] = useState<AdminUser | null>(null);
   const [form] = Form.useForm();
   const [submitting, setSubmitting] = useState(false);
+  const [pwdModalOpen, setPwdModalOpen] = useState(false);
+  const [pwdUser, setPwdUser] = useState<AdminUser | null>(null);
+  const [pwdForm] = Form.useForm();
+  const [pwdSubmitting, setPwdSubmitting] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -78,6 +82,26 @@ function UserTab() {
     } catch { message.error('删除失败'); }
   };
 
+  const openPwdModal = (user: AdminUser) => {
+    setPwdUser(user);
+    pwdForm.resetFields();
+    setPwdModalOpen(true);
+  };
+
+  const handlePwdReset = async () => {
+    setPwdSubmitting(true);
+    try {
+      const values = await pwdForm.validateFields();
+      await updateUser(pwdUser!.id, { password: values.password });
+      message.success('密码重置成功');
+      setPwdModalOpen(false);
+    } catch (err: any) {
+      if (err?.errorFields) return;
+      message.error('密码重置失败');
+    }
+    setPwdSubmitting(false);
+  };
+
   const columns = [
     { title: 'ID', dataIndex: 'id', width: 60 },
     { title: '用户名', dataIndex: 'username', width: 140 },
@@ -88,10 +112,13 @@ function UserTab() {
     { title: '上次登录', dataIndex: 'last_login_at', width: 160, render: (v: string | null) => v ? new Date(v).toLocaleString('zh-CN') : '—' },
     { title: '创建时间', dataIndex: 'created_at', width: 160, render: (v: string) => new Date(v).toLocaleString('zh-CN') },
     {
-      title: '操作', key: 'action', width: 100,
+      title: '操作', key: 'action', width: 160,
       render: (_: any, r: AdminUser) => (
         <Space size={4}>
           <Button type="link" size="small" icon={<EditOutlined />} onClick={() => openModal(r)} />
+          <Tooltip title="重置密码">
+            <Button type="link" size="small" icon={<KeyOutlined />} onClick={() => openPwdModal(r)} />
+          </Tooltip>
           {r.id !== currentUser?.id && (
             <Popconfirm title="确认删除？" onConfirm={() => handleDelete(r.id)}>
               <Button type="link" size="small" danger icon={<DeleteOutlined />} />
@@ -170,6 +197,50 @@ function UserTab() {
               </Select>
             </Form.Item>
           </div>
+        </Form>
+      </Modal>
+      <Modal
+        title={pwdUser ? `重置密码 - ${pwdUser.nickname || pwdUser.username}` : '重置密码'}
+        open={pwdModalOpen}
+        onCancel={() => setPwdModalOpen(false)}
+        onOk={handlePwdReset}
+        confirmLoading={pwdSubmitting}
+        okText="确认重置"
+        cancelText="取消"
+        destroyOnClose
+        centered
+        width={420}
+      >
+        <Form form={pwdForm} layout="vertical" preserve={false}>
+          <Form.Item
+            name="password"
+            label="新密码"
+            rules={[
+              { required: true, message: '请输入密码' },
+              {
+                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,20}$/,
+                message: '密码需8-20位，包含大小写字母和数字',
+              },
+            ]}
+          >
+            <Input.Password placeholder="输入新密码" />
+          </Form.Item>
+          <Form.Item
+            name="confirm"
+            label="确认密码"
+            dependencies={['password']}
+            rules={[
+              { required: true, message: '请确认密码' },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) return Promise.resolve();
+                  return Promise.reject(new Error('两次输入的密码不一致'));
+                },
+              }),
+            ]}
+          >
+            <Input.Password placeholder="再次输入新密码" />
+          </Form.Item>
         </Form>
       </Modal>
     </div>

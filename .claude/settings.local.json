@@ -65,7 +65,8 @@
       "Bash(taskkill -f -im node.exe)",
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('deploy_completed:', d.get\\('deploy_completed'\\), '| deploy_link:', d.get\\('deploy_link'\\)\\)\")",
       "Bash(killall node *)",
-      "Read(//c/Users/Administrator/Desktop/my-project/server/**)"
+      "Read(//c/Users/Administrator/Desktop/my-project/server/**)",
+      "Bash(taskkill //PID 1432 //F)"
     ]
   }
 }

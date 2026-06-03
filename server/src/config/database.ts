@@ -146,6 +146,21 @@ export async function initDatabase() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
 
+  // ── Chat messages ──────────────────────────────
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS chat_messages (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      sender_id INT NOT NULL COMMENT '发送者ID',
+      receiver_id INT DEFAULT NULL COMMENT '接收者ID（NULL=发给管理员）',
+      message TEXT NOT NULL COMMENT '消息内容',
+      is_read TINYINT DEFAULT 0 COMMENT '0未读 1已读',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      INDEX idx_sender (sender_id),
+      INDEX idx_receiver (receiver_id),
+      INDEX idx_read (is_read)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  `);
+
   // ── Seed default roles ──────────────────────────────
   const [roleRows] = await pool.query<any[]>('SELECT COUNT(*) as cnt FROM roles');
   if (roleRows[0].cnt === 0) {
