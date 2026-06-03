@@ -301,6 +301,7 @@ async function resequenceIds() {
 
 function safeParseJSON(str: string) {
   try {
+    if (Array.isArray(str)) return str;
     const parsed = JSON.parse(str);
     return Array.isArray(parsed) ? parsed : [];
   } catch {
